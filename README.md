@@ -6,11 +6,6 @@ Este proyecto consiste en el diseño, construcción y consumo de un **Data Wareh
 
 El objetivo es transformar los datos operacionales en un modelo dimensional optimizado para el análisis histórico y la toma de decisiones estratégicas del negocio.
 
-## Integrantes del grupo
-- Karel González
-- Justin Soledispa
-- Juan Diego Sotomayor
-
 ### Flujo general del proyecto
 
 ```
@@ -36,3 +31,8 @@ Base de datos OLTP (PostgreSQL)
 | Data Warehouse      | PostgreSQL         | Modelo dimensional estrella                       |
 | Aplicación          | Java + JavaFX      | Interfaz de dashboards, reportes y filtrado       |
 | Control de versiones| Git + GitHub       | Versionamiento y colaboración del equipo          |
+
+## Integrantes del grupo
+- Karel González
+- Justin Soledispa
+- Juan Diego Sotomayor
