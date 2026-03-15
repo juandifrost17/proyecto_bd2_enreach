@@ -84,13 +84,13 @@ CREATE TABLE Contrato (
 
 CREATE TABLE Factura (
     ID_Factura SERIAL PRIMARY KEY,
-    ID_Cliente INT,
+    ID_Contrato INT,
     periodo_inicio DATE,
     periodo_fin DATE,
     fecha_emision TIMESTAMP,
     monto_total NUMERIC(10, 2),
     estado VARCHAR(20),
-	FOREIGN KEY (ID_Cliente) REFERENCES Contrato(ID_Cliente)
+    FOREIGN KEY (ID_Contrato) REFERENCES Contrato(ID_Contrato)
 );
 
 CREATE TABLE Filial (
@@ -285,6 +285,7 @@ CREATE TABLE Llamada (
 	FOREIGN KEY (ID_Numero_Destino) REFERENCES NumeroDID(ID_Numero),
 	FOREIGN KEY (ID_Cola) REFERENCES Cola_Llamadas(ID_Cola)
 );
+
 
 -- 7. TABLAS DE SEXTO NIVEL DE DEPENDENCIA
 CREATE TABLE Mensaje_Buzon (
