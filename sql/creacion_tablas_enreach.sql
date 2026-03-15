@@ -1,7 +1,4 @@
--- =========================================================================
 -- 1. TABLAS INDEPENDIENTES (Sin llaves foráneas)
--- =========================================================================
-
 CREATE TABLE Integracion (
     ID_Integracion SERIAL PRIMARY KEY,
     nombre VARCHAR(50),
@@ -58,10 +55,8 @@ CREATE TABLE Cola_Llamadas (
     max_espera_segundos INT
 );
 
--- =========================================================================
--- 2. TABLAS DE PRIMER NIVEL DE DEPENDENCIA
--- =========================================================================
 
+-- 2. TABLAS DE PRIMER NIVEL DE DEPENDENCIA
 CREATE TABLE Cliente_Integracion (
     ID_Cliente_Integracion SERIAL PRIMARY KEY,
     ID_Cliente INT,
@@ -118,10 +113,8 @@ CREATE TABLE Factura_Detalle (
 	FOREIGN KEY (ID_Factura) REFERENCES Factura(ID_Factura)
 );
 
--- =========================================================================
--- 3. TABLAS DE SEGUNDO NIVEL DE DEPENDENCIA
--- =========================================================================
 
+-- 3. TABLAS DE SEGUNDO NIVEL DE DEPENDENCIA
 CREATE TABLE Pago (
     ID_Pago SERIAL PRIMARY KEY,
     ID_Factura INT,
@@ -153,10 +146,8 @@ CREATE TABLE Usuario (
 	FOREIGN KEY (ID_Filial) REFERENCES Filial(ID_Filial)
 );
 
--- =========================================================================
--- 4. TABLAS DE TERCER NIVEL DE DEPENDENCIA (Dependen de Usuario)
--- =========================================================================
 
+-- 4. TABLAS DE TERCER NIVEL DE DEPENDENCIA (Dependen de Usuario)
 CREATE TABLE Bitacora (
     ID_Bitacora BIGSERIAL PRIMARY KEY,
     ID_Cliente INT,
@@ -229,10 +220,8 @@ CREATE TABLE Mensaje_Directo (
 	FOREIGN KEY (ID_Mensaje_Original) REFERENCES Mensaje_Directo(ID_Mensaje_Directo)
 );
 
--- =========================================================================
--- 5. TABLAS DE CUARTO NIVEL DE DEPENDENCIA
--- =========================================================================
 
+-- 5. TABLAS DE CUARTO NIVEL DE DEPENDENCIA
 CREATE TABLE Estado_Entrega_Grupo (
     ID_Estado SERIAL PRIMARY KEY,
     ID_Mensaje_Grupo INT,
@@ -260,10 +249,8 @@ CREATE TABLE NumeroDID (
 	FOREIGN KEY (ID_Extension) REFERENCES Extension(ID_Extension)
 );
 
--- =========================================================================
--- 6. TABLAS DE QUINTO NIVEL DE DEPENDENCIA (Dependen de NumeroDID)
--- =========================================================================
 
+-- 6. TABLAS DE QUINTO NIVEL DE DEPENDENCIA (Dependen de NumeroDID)
 -- Tabla con llave primaria que a la vez es foránea (Relación 1 a 1)
 CREATE TABLE Buzon_Voz (
     ID_Numero INT PRIMARY KEY,
@@ -299,10 +286,7 @@ CREATE TABLE Llamada (
 	FOREIGN KEY (ID_Cola) REFERENCES Cola_Llamadas(ID_Cola)
 );
 
--- =========================================================================
 -- 7. TABLAS DE SEXTO NIVEL DE DEPENDENCIA
--- =========================================================================
-
 CREATE TABLE Mensaje_Buzon (
     ID_MensajeVoz SERIAL PRIMARY KEY,
     ID_Numero INT,
