@@ -18,7 +18,7 @@ Base de datos OLTP (PostgreSQL)
    Data Warehouse (PostgreSQL - Modelo Estrella)
         │
         ▼
-   Aplicación consumidora (JavaFX)
+   Aplicación consumidora 
         └── Dashboards, reportes y consultas interactivas
 ```
 
@@ -29,7 +29,7 @@ Base de datos OLTP (PostgreSQL)
 | Base OLTP           | PostgreSQL         | Modelo relacional normalizado (28 tablas)         |
 | ETL                 | Pentaho Spoon      | Extracción, transformación y carga de datos       |
 | Data Warehouse      | PostgreSQL         | Modelo dimensional estrella                       |
-| Aplicación          | Java + JavaFX      | Interfaz de dashboards, reportes y filtrado       |
+| Aplicación          | Java + JavaScript  | Interfaz de dashboards, reportes y filtrado       |
 | Control de versiones| Git + GitHub       | Versionamiento y colaboración del equipo          |
 
 ## Integrantes del grupo
