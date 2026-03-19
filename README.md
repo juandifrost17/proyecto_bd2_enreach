@@ -18,7 +18,7 @@ Base de datos OLTP (PostgreSQL)
    Data Warehouse (PostgreSQL - Modelo Estrella)
         │
         ▼
-   Aplicación consumidora 
+   Aplicación consumidora (Java + JavaScript)
         └── Dashboards, reportes y consultas interactivas
 ```
 
