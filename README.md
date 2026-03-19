@@ -26,7 +26,7 @@ Base de datos OLTP (PostgreSQL)
 
 | Capa                | Tecnología         | Descripción                                       |
 |---------------------|--------------------|---------------------------------------------------|
-| Base OLTP           | PostgreSQL         | Modelo relacional normalizado (28 tablas)         |
+| Base OLTP           | PostgreSQL         | Modelo relacional normalizado (29 tablas)         |
 | ETL                 | Pentaho Spoon      | Extracción, transformación y carga de datos       |
 | Data Warehouse      | PostgreSQL         | Modelo dimensional estrella                       |
 | Aplicación          | Java + JavaScript  | Interfaz de dashboards, reportes y filtrado       |
