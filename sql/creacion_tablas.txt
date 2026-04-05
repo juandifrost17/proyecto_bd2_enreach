@@ -1,322 +1,386 @@
--- 1. TABLAS INDEPENDIENTES (Sin llaves foráneas)
+-- ============================================================
+-- NIVEL 1 — CATÁLOGOS Y MAESTROS BASE
+-- ============================================================
+
 CREATE TABLE Integracion (
-    ID_Integracion SERIAL PRIMARY KEY,
-    nombre VARCHAR(50),
-    tipo VARCHAR(20),
-	proveedor VARCHAR(50),
-    estado VARCHAR(20)
+    ID_Integracion INT PRIMARY KEY,
+    nombre         VARCHAR(50)  NOT NULL,
+    tipo           VARCHAR(20)  NOT NULL,
+    proveedor      VARCHAR(50)  NOT NULL,
+    estado         VARCHAR(20)  NOT NULL
 );
 
 CREATE TABLE Rol (
-    ID_Rol SERIAL PRIMARY KEY,
-    nombre VARCHAR(50),
-    descripcion VARCHAR(255),
-    fecha_creacion TIMESTAMP,
-    estado VARCHAR(20)
+    ID_Rol         INT PRIMARY KEY,
+    nombre         VARCHAR(50)   NOT NULL,
+    descripcion    VARCHAR(255),
+    fecha_creacion TIMESTAMP     NOT NULL,
+    estado         VARCHAR(20)   NOT NULL
 );
 
 CREATE TABLE Partner (
-    ID_Partner SERIAL PRIMARY KEY,
-    nombre VARCHAR(50),
-    pais VARCHAR(50),
-    dominio_portal VARCHAR(100),
-    estado VARCHAR(20)
+    ID_Partner     INT PRIMARY KEY,
+    nombre         VARCHAR(50)   NOT NULL,
+    pais           VARCHAR(50)   NOT NULL,
+    dominio_portal VARCHAR(100)  NOT NULL UNIQUE,
+    estado         VARCHAR(20)   NOT NULL
 );
 
 CREATE TABLE Cliente (
-    ID_Cliente SERIAL PRIMARY KEY,
-	razon_social VARCHAR(100),
-    identificador_fiscal VARCHAR(50),
-	dominio_tenant VARCHAR(25),
-    timezone VARCHAR(50),
-    pais_sede VARCHAR(50),
-    ciudad_sede VARCHAR(50),
-    fecha_alta DATE,
-    estado VARCHAR(20)
+    ID_Cliente           INT PRIMARY KEY,
+    razon_social         VARCHAR(100)  NOT NULL,
+    identificador_fiscal VARCHAR(50)   NOT NULL UNIQUE,
+    dominio_tenant       VARCHAR(50)   NOT NULL UNIQUE,
+    timezone             VARCHAR(50)   NOT NULL,
+    pais_sede            VARCHAR(50)   NOT NULL,
+    ciudad_sede          VARCHAR(50)   NOT NULL,
+    fecha_alta           DATE          NOT NULL,
+    estado               VARCHAR(20)   NOT NULL
 );
 
 CREATE TABLE Grupo (
-    ID_Grupo SERIAL PRIMARY KEY,
-    nombre VARCHAR(50),
-    descripcion VARCHAR(64),
-    tipo_grupo VARCHAR(32),
-    fecha_creacion TIMESTAMP,
-    estado VARCHAR(20)
+    ID_Grupo       INT PRIMARY KEY,
+    nombre         VARCHAR(50)   NOT NULL,
+    descripcion    VARCHAR(64),
+    tipo_grupo     VARCHAR(32)   NOT NULL,
+    fecha_creacion TIMESTAMP     NOT NULL,
+    estado         VARCHAR(20)   NOT NULL
 );
 
 CREATE TABLE Plan_Producto (
-    ID_Plan SERIAL PRIMARY KEY,
-    nombre VARCHAR(50),
-    descripcion VARCHAR(255),
-    tipo_servicio VARCHAR(50),
-    costo_mensual NUMERIC(10, 2),
-    minutos_incluidos INT,
-    extensiones_incluidas INT
+    ID_Plan            INT PRIMARY KEY,
+    nombre             VARCHAR(50)   NOT NULL,
+    descripcion        VARCHAR(255),
+    nivel_plan         INT           NOT NULL UNIQUE,
+    mensajes_incluidos INT           NOT NULL,
+    minutos_incluidos  INT           NOT NULL,
+    precio_mensual     NUMERIC(10,2) NOT NULL,
+    CHECK (nivel_plan BETWEEN 1 AND 10),
+    CHECK (mensajes_incluidos > 0),
+    CHECK (minutos_incluidos > 0),
+    CHECK (precio_mensual > 0)
 );
 
 CREATE TABLE Cola_Llamadas (
-    ID_Cola SERIAL PRIMARY KEY,
-    nombre VARCHAR(50),
-    estrategia VARCHAR(50),
-    max_espera_segundos INT
+    ID_Cola             INT PRIMARY KEY,
+    nombre              VARCHAR(50)  NOT NULL,
+    estrategia          VARCHAR(50)  NOT NULL,
+    max_espera_segundos INT          NOT NULL,
+    CHECK (max_espera_segundos >= 0)
 );
 
+-- ============================================================
+-- NIVEL 2 — ESTRUCTURA BASE DEL CLIENTE Y CONTRATACIÓN
+-- ============================================================
 
--- 2. TABLAS DE PRIMER NIVEL DE DEPENDENCIA
 CREATE TABLE Cliente_Integracion (
-    ID_Cliente_Integracion SERIAL PRIMARY KEY,
-    ID_Cliente INT,
-    ID_Integracion INT,
-    fecha_configuracion TIMESTAMP,
-    referencia_externo VARCHAR(255),
-    ultimo_sync_time TIMESTAMP,
-    estado VARCHAR(20),
-	FOREIGN KEY (ID_Cliente) REFERENCES Cliente(ID_Cliente),
-	FOREIGN KEY (ID_Integracion) REFERENCES Integracion(ID_Integracion)
+    ID_Cliente_Integracion INT PRIMARY KEY,
+    ID_Cliente             INT           NOT NULL,
+    ID_Integracion         INT           NOT NULL,
+    fecha_configuracion    TIMESTAMP     NOT NULL,
+    referencia_externo     VARCHAR(255),
+    ultimo_sync_time       TIMESTAMP,
+    estado                 VARCHAR(20)   NOT NULL,
+    CHECK (
+        ultimo_sync_time IS NULL
+        OR ultimo_sync_time >= fecha_configuracion
+    ),
+    FOREIGN KEY (ID_Cliente) REFERENCES Cliente(ID_Cliente),
+    FOREIGN KEY (ID_Integracion) REFERENCES Integracion(ID_Integracion)
 );
 
 CREATE TABLE Acuerdo_Plataforma (
-	ID_Acuerdo SERIAL PRIMARY KEY,
-	ID_Partner INT,
-	fecha_inicio DATE,
-	fecha_fin DATE,
-	estado VARCHAR(20),
-	FOREIGN KEY (ID_Partner) REFERENCES Partner(ID_Partner)
-);
-
-CREATE TABLE Contrato (
-    ID_Contrato SERIAL PRIMARY KEY,
-    ID_Cliente INT,
-    ID_Partner INT,
-    fecha_inicio DATE,
-    fecha_fin DATE,
-    fecha_renovacion DATE,
-    duracion_meses INT,
-    estado VARCHAR(20),
-	FOREIGN KEY (ID_Cliente) REFERENCES Cliente(ID_Cliente),
-	FOREIGN KEY (ID_Partner) REFERENCES Partner(ID_Partner)
-);
-
-CREATE TABLE Factura (
-    ID_Factura SERIAL PRIMARY KEY,
-    ID_Contrato INT,
-    periodo_inicio DATE,
-    periodo_fin DATE,
-    fecha_emision TIMESTAMP,
-    estado VARCHAR(20),
-    impuesto_porcentaje NUMERIC(5, 2),
-    impuesto_monto NUMERIC(10, 2),
-    monto_total NUMERIC(10, 2),
-    FOREIGN KEY (ID_Contrato) REFERENCES Contrato(ID_Contrato)
+    ID_Acuerdo      INT PRIMARY KEY,
+    ID_Partner      INT           NOT NULL,
+    nivel_acuerdo   INT           NOT NULL,
+    precio_mensual  NUMERIC(10,2) NOT NULL,
+    fecha_inicio    DATE          NOT NULL,
+    fecha_fin       DATE          NOT NULL,
+    duracion_meses  INT           NOT NULL,
+    estado          VARCHAR(20)   NOT NULL,
+    CHECK (nivel_acuerdo BETWEEN 1 AND 5),
+    CHECK (precio_mensual > 0),
+    CHECK (duracion_meses IN (12, 24, 36)),
+    CHECK (fecha_fin >= fecha_inicio),
+    FOREIGN KEY (ID_Partner) REFERENCES Partner(ID_Partner)
 );
 
 CREATE TABLE Filial (
-    ID_Filial SERIAL PRIMARY KEY,
-    ID_Cliente INT,
-    nombre VARCHAR(100),
-    pais VARCHAR(50),
-    ciudad VARCHAR(50),
-    direccion VARCHAR(255),
-    estado VARCHAR(20),
-	FOREIGN KEY (ID_Cliente) REFERENCES Cliente(ID_Cliente)
+    ID_Filial  INT PRIMARY KEY,
+    ID_Cliente INT           NOT NULL,
+    nombre     VARCHAR(100)  NOT NULL,
+    pais       VARCHAR(50)   NOT NULL,
+    ciudad     VARCHAR(50)   NOT NULL,
+    direccion  VARCHAR(255)  NOT NULL,
+    estado     VARCHAR(20)   NOT NULL,
+    FOREIGN KEY (ID_Cliente) REFERENCES Cliente(ID_Cliente)
 );
 
-CREATE TABLE Factura_Detalle (
-	ID_Detalle SERIAL PRIMARY KEY,
-	ID_Factura INT,
-	concepto VARCHAR(100),
-	cantidad INT,
-	precio_unitario NUMERIC(10, 2),
-	subtotal NUMERIC(10, 2),
-	descuento NUMERIC(10, 2),
-	FOREIGN KEY (ID_Factura) REFERENCES Factura(ID_Factura)
-);
-
-
--- 3. TABLAS DE SEGUNDO NIVEL DE DEPENDENCIA
-CREATE TABLE Pago (
-    ID_Pago SERIAL PRIMARY KEY,
-    ID_Factura INT,
-    fecha TIMESTAMP,
-    monto NUMERIC(10, 2),
-    metodo_pago VARCHAR(50),
-    estado VARCHAR(20),
-	FOREIGN KEY (ID_Factura) REFERENCES Factura(ID_Factura)
-);
-
-CREATE TABLE Contrato_Item (
-    ID_Item SERIAL PRIMARY KEY,
-    ID_Contrato INT,
-    ID_Plan INT,
-    cantidad INT,
-    precio_unitario NUMERIC(10, 2),
-	FOREIGN KEY (ID_Contrato) REFERENCES Contrato(ID_Contrato),
-	FOREIGN KEY (ID_Plan) REFERENCES Plan_Producto(ID_Plan)
+CREATE TABLE Extension (
+    ID_Extension     INT PRIMARY KEY,
+    ID_Cliente       INT          NOT NULL UNIQUE,
+    numero_extension VARCHAR(10)  NOT NULL,
+    tipo             VARCHAR(20)  NOT NULL,
+    estado           VARCHAR(20)  NOT NULL,
+    FOREIGN KEY (ID_Cliente) REFERENCES Cliente(ID_Cliente)
 );
 
 CREATE TABLE Usuario (
-    ID_Usuario SERIAL PRIMARY KEY,
-    ID_Filial INT,
-    nombre VARCHAR(50),
-	apellido VARCHAR(50),
-    email VARCHAR(255),
-    password_hash VARCHAR(255),
-    estado VARCHAR(20),
-	FOREIGN KEY (ID_Filial) REFERENCES Filial(ID_Filial)
+    ID_Usuario    INT PRIMARY KEY,
+    ID_Filial     INT           NOT NULL,
+    nombre        VARCHAR(50)   NOT NULL,
+    apellido      VARCHAR(50)   NOT NULL,
+    email         VARCHAR(255)  NOT NULL UNIQUE,
+    password_hash VARCHAR(255)  NOT NULL,
+    estado        VARCHAR(20)   NOT NULL,
+    FOREIGN KEY (ID_Filial) REFERENCES Filial(ID_Filial)
 );
 
-
--- 4. TABLAS DE TERCER NIVEL DE DEPENDENCIA (Dependen de Usuario)
-CREATE TABLE Bitacora (
-    ID_Bitacora BIGSERIAL PRIMARY KEY,
-    ID_Cliente INT,
-	fecha TIMESTAMP,
-	usuario VARCHAR(100),
-    tabla VARCHAR(50),
-    accion VARCHAR(20),
-    id_registro_afectado INT,
-    observacion VARCHAR(255),
-	FOREIGN KEY (ID_Cliente) REFERENCES Cliente(ID_Cliente)
+CREATE TABLE Contrato (
+    ID_Contrato    INT PRIMARY KEY,
+    ID_Cliente     INT           NOT NULL,
+    ID_Partner     INT           NOT NULL,
+    ID_Plan        INT           NOT NULL,
+    cantidad_plan  INT           NOT NULL,
+    fecha_inicio   DATE          NOT NULL,
+    fecha_fin      DATE          NOT NULL,
+    duracion_meses INT           NOT NULL,
+    estado         VARCHAR(20)   NOT NULL,
+    CHECK (cantidad_plan > 0),
+    CHECK (duracion_meses IN (12, 24, 36)),
+    CHECK (fecha_fin >= fecha_inicio),
+    FOREIGN KEY (ID_Cliente) REFERENCES Cliente(ID_Cliente),
+    FOREIGN KEY (ID_Partner) REFERENCES Partner(ID_Partner),
+    FOREIGN KEY (ID_Plan) REFERENCES Plan_Producto(ID_Plan)
 );
+
+-- ============================================================
+-- NIVEL 3 — FACTURACIÓN Y PAGOS
+-- ============================================================
+
+CREATE TABLE Factura (
+    ID_Factura          INT PRIMARY KEY,
+    ID_Contrato         INT           NOT NULL UNIQUE,
+    periodo_inicio      DATE          NOT NULL,
+    periodo_fin         DATE          NOT NULL,
+    fecha_emision       TIMESTAMP     NOT NULL,
+    estado              VARCHAR(20)   NOT NULL,
+    subtotal            NUMERIC(10,2) NOT NULL,
+    descuento           NUMERIC(5,2)  NOT NULL,
+    impuesto_porcentaje NUMERIC(5,2)  NOT NULL,
+    impuesto_monto      NUMERIC(10,2) NOT NULL,
+    monto_total         NUMERIC(10,2) NOT NULL,
+    CHECK (periodo_fin >= periodo_inicio),
+    CHECK (subtotal > 0),
+    CHECK (descuento BETWEEN 0 AND 100),
+    CHECK (impuesto_porcentaje IN (5.00, 10.00, 15.00)),
+    CHECK (impuesto_monto >= 0),
+    CHECK (monto_total > 0),
+    FOREIGN KEY (ID_Contrato) REFERENCES Contrato(ID_Contrato)
+);
+
+CREATE TABLE Factura_Partner (
+    ID_Factura_Partner  INT PRIMARY KEY,
+    ID_Acuerdo          INT           NOT NULL UNIQUE,
+    periodo_inicio      DATE          NOT NULL,
+    periodo_fin         DATE          NOT NULL,
+    fecha_emision       TIMESTAMP     NOT NULL,
+    estado              VARCHAR(20)   NOT NULL,
+    impuesto_porcentaje NUMERIC(5,2)  NOT NULL,
+    impuesto_monto      NUMERIC(10,2) NOT NULL,
+    monto_total         NUMERIC(10,2) NOT NULL,
+    CHECK (periodo_fin >= periodo_inicio),
+    CHECK (impuesto_porcentaje IN (5.00, 10.00, 15.00)),
+    CHECK (impuesto_monto >= 0),
+    CHECK (monto_total > 0),
+    FOREIGN KEY (ID_Acuerdo) REFERENCES Acuerdo_Plataforma(ID_Acuerdo)
+);
+
+CREATE TABLE Pago (
+    ID_Pago     INT PRIMARY KEY,
+    ID_Factura  INT           NOT NULL,
+    fecha       TIMESTAMP     NOT NULL,
+    monto       NUMERIC(10,2) NOT NULL,
+    metodo_pago VARCHAR(50)   NOT NULL,
+    estado      VARCHAR(20)   NOT NULL,
+    CHECK (monto > 0),
+    FOREIGN KEY (ID_Factura) REFERENCES Factura(ID_Factura)
+);
+
+CREATE TABLE Pago_Partner (
+    ID_Pago_Partner    INT PRIMARY KEY,
+    ID_Factura_Partner INT           NOT NULL,
+    fecha              TIMESTAMP     NOT NULL,
+    monto              NUMERIC(10,2) NOT NULL,
+    metodo_pago        VARCHAR(50)   NOT NULL,
+    estado             VARCHAR(20)   NOT NULL,
+    CHECK (monto > 0),
+    FOREIGN KEY (ID_Factura_Partner) REFERENCES Factura_Partner(ID_Factura_Partner)
+);
+
+-- ============================================================
+-- NIVEL 4 — ESTRUCTURA OPERATIVA Y ASIGNACIONES
+-- ============================================================
 
 CREATE TABLE Usuario_Rol (
-    ID_Usuario INT,
-    ID_Rol INT,
-    fecha_asignacion TIMESTAMP,
+    ID_Usuario        INT           NOT NULL,
+    ID_Rol            INT           NOT NULL,
+    fecha_asignacion  TIMESTAMP     NOT NULL,
     fecha_eliminacion TIMESTAMP,
-    estado VARCHAR(20),
+    estado            VARCHAR(20)   NOT NULL,
     PRIMARY KEY (ID_Usuario, ID_Rol),
-	FOREIGN KEY (ID_Usuario) REFERENCES Usuario(ID_Usuario),
+    CHECK (
+        fecha_eliminacion IS NULL
+        OR fecha_eliminacion >= fecha_asignacion
+    ),
+    FOREIGN KEY (ID_Usuario) REFERENCES Usuario(ID_Usuario),
     FOREIGN KEY (ID_Rol) REFERENCES Rol(ID_Rol)
 );
 
 CREATE TABLE Usuario_Grupo (
-    ID_Usuario INT,
-    ID_Grupo INT,
-    rol_en_grupo VARCHAR(32),
-    fecha_union TIMESTAMP,
+    ID_Usuario   INT           NOT NULL,
+    ID_Grupo     INT           NOT NULL,
+    rol_en_grupo VARCHAR(32)   NOT NULL,
+    fecha_union  TIMESTAMP     NOT NULL,
     fecha_salida TIMESTAMP,
     PRIMARY KEY (ID_Usuario, ID_Grupo),
-	FOREIGN KEY (ID_Usuario) REFERENCES Usuario(ID_Usuario),
+    CHECK (
+        fecha_salida IS NULL
+        OR fecha_salida >= fecha_union
+    ),
+    FOREIGN KEY (ID_Usuario) REFERENCES Usuario(ID_Usuario),
     FOREIGN KEY (ID_Grupo) REFERENCES Grupo(ID_Grupo)
 );
 
-CREATE TABLE Extension (
-    ID_Extension SERIAL PRIMARY KEY,
-    ID_Usuario INT,
-    numero_extension VARCHAR(10),
-    tipo VARCHAR(20),
-    estado VARCHAR(20),
-	FOREIGN KEY (ID_Usuario) REFERENCES Usuario(ID_Usuario)
-);
-
-CREATE TABLE Mensaje_Grupo (
-    ID_Mensaje_Grupo SERIAL PRIMARY KEY,
-    ID_Usuario_Origen INT,
-    ID_Grupo_Destino INT,
-    contenido VARCHAR(2048),
-    tipo_contenido VARCHAR(100),
-    url VARCHAR(255),
-    fecha_envio TIMESTAMP,
-    plataforma_origen VARCHAR(50),
-    ID_Mensaje_Original INT,
-	FOREIGN KEY (ID_Usuario_Origen, ID_Grupo_Destino) REFERENCES Usuario_Grupo(ID_Usuario, ID_Grupo),
-	FOREIGN KEY (ID_Mensaje_Original) REFERENCES Mensaje_Grupo(ID_Mensaje_Grupo)
-);
-
-CREATE TABLE Mensaje_Directo (
-    ID_Mensaje_Directo SERIAL PRIMARY KEY,
-    ID_Usuario_Origen INT,
-    ID_Usuario_Destino INT,
-    contenido VARCHAR(2048),
-    tipo_contenido VARCHAR(100),
-    url VARCHAR(255),
-    fecha_envio TIMESTAMP,
-    plataforma_origen VARCHAR(50),
-    ID_Mensaje_Original INT,
-	FOREIGN KEY (ID_Usuario_Origen) REFERENCES Usuario(ID_Usuario),
-	FOREIGN KEY (ID_Usuario_Destino) REFERENCES Usuario(ID_Usuario),
-	FOREIGN KEY (ID_Mensaje_Original) REFERENCES Mensaje_Directo(ID_Mensaje_Directo)
-);
-
-
--- 5. TABLAS DE CUARTO NIVEL DE DEPENDENCIA
-CREATE TABLE Estado_Entrega_Grupo (
-    ID_Estado SERIAL PRIMARY KEY,
-    ID_Mensaje_Grupo INT,
-    ID_Usuario INT,
-	ID_Grupo INT,
-	fecha_evento TIMESTAMP,
-    estado VARCHAR(20),
-	FOREIGN KEY (ID_Mensaje_Grupo) REFERENCES Mensaje_Grupo(ID_Mensaje_Grupo),
-	FOREIGN KEY (ID_Usuario, ID_Grupo) REFERENCES Usuario_Grupo(ID_Usuario, ID_Grupo)
-);
-
-CREATE TABLE Estado_Entrega_Directo (
-    ID_Estado SERIAL PRIMARY KEY,
-    ID_Mensaje_Directo INT,
-    fecha_evento TIMESTAMP,
-    estado VARCHAR(20),
-	FOREIGN KEY (ID_Mensaje_Directo) REFERENCES Mensaje_Directo(ID_Mensaje_Directo)
-);
-
 CREATE TABLE NumeroDID (
-    ID_Numero SERIAL PRIMARY KEY,
-    ID_Extension INT,
-    numero VARCHAR(20),
-    tipo VARCHAR(20),
-    estado VARCHAR(20),
-	FOREIGN KEY (ID_Extension) REFERENCES Extension(ID_Extension)
+    ID_Numero  INT PRIMARY KEY,
+    ID_Usuario INT          NOT NULL UNIQUE,
+    numero     VARCHAR(20)  NOT NULL UNIQUE,
+    tipo       VARCHAR(20)  NOT NULL,
+    estado     VARCHAR(20)  NOT NULL,
+    FOREIGN KEY (ID_Usuario) REFERENCES Usuario(ID_Usuario)
 );
 
+-- ============================================================
+-- NIVEL 5 — CAPA DE VOZ BASE
+-- ============================================================
 
--- 6. TABLAS DE QUINTO NIVEL DE DEPENDENCIA (Dependen de NumeroDID)
--- Tabla con llave primaria que a la vez es foránea (Relación 1 a 1)
 CREATE TABLE Buzon_Voz (
-    ID_Numero INT PRIMARY KEY,
-    pin VARCHAR(10),
+    ID_Numero     INT PRIMARY KEY,
+    pin           VARCHAR(10)   NOT NULL,
     reenvio_email VARCHAR(255),
-    ruta_saludo VARCHAR(255),
+    ruta_saludo   VARCHAR(255),
     FOREIGN KEY (ID_Numero) REFERENCES NumeroDID(ID_Numero)
 );
 
 CREATE TABLE Endpoint (
-    ID_Endpoint SERIAL PRIMARY KEY,
-    ID_Numero INT,
-    tipo VARCHAR(50),
-    fecha_creacion TIMESTAMP,
+    ID_Endpoint       INT PRIMARY KEY,
+    ID_Numero         INT           NOT NULL,
+    tipo              VARCHAR(50)   NOT NULL,
+    fecha_creacion    TIMESTAMP     NOT NULL,
     fecha_eliminacion TIMESTAMP,
-    estado VARCHAR(20),
-	FOREIGN KEY (ID_Numero) REFERENCES NumeroDID(ID_Numero)
+    estado            VARCHAR(20)   NOT NULL,
+    CHECK (
+        fecha_eliminacion IS NULL
+        OR fecha_eliminacion >= fecha_creacion
+    ),
+    FOREIGN KEY (ID_Numero) REFERENCES NumeroDID(ID_Numero)
 );
+
+-- ============================================================
+-- NIVEL 6 — EVENTOS OPERATIVOS
+-- ============================================================
 
 CREATE TABLE Llamada (
-    ID_Llamada SERIAL PRIMARY KEY,
-    ID_Numero_Origen INT,
-    ID_Numero_Destino INT,
-    ID_Cola INT,
-    tipo_llamada VARCHAR(20),
-    fecha_inicio TIMESTAMP,
-    fecha_fin TIMESTAMP,
-    duracion_seg INT,
-    tiempo_espera_seg INT,
-    costo_llamada NUMERIC(10, 2),
-    estado VARCHAR(20),
-    plataforma_origen VARCHAR(50),
-	FOREIGN KEY (ID_Numero_Origen) REFERENCES NumeroDID(ID_Numero),
-	FOREIGN KEY (ID_Numero_Destino) REFERENCES NumeroDID(ID_Numero),
-	FOREIGN KEY (ID_Cola) REFERENCES Cola_Llamadas(ID_Cola)
+    ID_Llamada        INT PRIMARY KEY,
+    ID_Numero_Origen  INT           NOT NULL,
+    ID_Numero_Destino INT           NOT NULL,
+    ID_Cola           INT,
+    ID_Contrato       INT           NOT NULL,
+    tipo_llamada      VARCHAR(20)   NOT NULL,
+    fecha_inicio      TIMESTAMP     NOT NULL,
+    fecha_fin         TIMESTAMP     NOT NULL,
+    duracion_seg      INT           NOT NULL,
+    tiempo_espera_seg INT           NOT NULL,
+    costo_llamada     NUMERIC(10,2) NOT NULL,
+    estado            VARCHAR(20)   NOT NULL,
+    plataforma_origen VARCHAR(50)   NOT NULL,
+    CHECK (ID_Numero_Origen <> ID_Numero_Destino),
+    CHECK (fecha_fin >= fecha_inicio),
+    CHECK (duracion_seg >= 0),
+    CHECK (tiempo_espera_seg >= 0),
+    CHECK (costo_llamada >= 0),
+    FOREIGN KEY (ID_Numero_Origen) REFERENCES NumeroDID(ID_Numero),
+    FOREIGN KEY (ID_Numero_Destino) REFERENCES NumeroDID(ID_Numero),
+    FOREIGN KEY (ID_Cola) REFERENCES Cola_Llamadas(ID_Cola),
+    FOREIGN KEY (ID_Contrato) REFERENCES Contrato(ID_Contrato)
 );
 
+CREATE TABLE Mensaje_Directo (
+    ID_Mensaje_Directo  INT PRIMARY KEY,
+    ID_Usuario_Origen   INT           NOT NULL,
+    ID_Usuario_Destino  INT           NOT NULL,
+    ID_Contrato         INT           NOT NULL,
+    contenido           VARCHAR(2048),
+    tipo_contenido      VARCHAR(100)  NOT NULL,
+    url                 VARCHAR(255),
+    fecha_envio         TIMESTAMP     NOT NULL,
+    plataforma_origen   VARCHAR(50)   NOT NULL,
+    ID_Mensaje_Original INT,
+    CHECK (ID_Usuario_Origen <> ID_Usuario_Destino),
+    FOREIGN KEY (ID_Usuario_Origen) REFERENCES Usuario(ID_Usuario),
+    FOREIGN KEY (ID_Usuario_Destino) REFERENCES Usuario(ID_Usuario),
+    FOREIGN KEY (ID_Contrato) REFERENCES Contrato(ID_Contrato),
+    FOREIGN KEY (ID_Mensaje_Original) REFERENCES Mensaje_Directo(ID_Mensaje_Directo)
+);
 
--- 7. TABLAS DE SEXTO NIVEL DE DEPENDENCIA
+CREATE TABLE Estado_Entrega_Directo (
+    ID_Estado          INT PRIMARY KEY,
+    ID_Mensaje_Directo INT          NOT NULL,
+    ID_Usuario         INT          NOT NULL,
+    fecha_evento       TIMESTAMP    NOT NULL,
+    estado             VARCHAR(20)  NOT NULL,
+    FOREIGN KEY (ID_Mensaje_Directo) REFERENCES Mensaje_Directo(ID_Mensaje_Directo),
+    FOREIGN KEY (ID_Usuario) REFERENCES Usuario(ID_Usuario)
+);
+
+CREATE TABLE Mensaje_Grupo (
+    ID_Mensaje_Grupo    INT PRIMARY KEY,
+    ID_Usuario_Origen   INT           NOT NULL,
+    ID_Grupo_Destino    INT           NOT NULL,
+    ID_Contrato         INT           NOT NULL,
+    contenido           VARCHAR(2048),
+    tipo_contenido      VARCHAR(100)  NOT NULL,
+    url                 VARCHAR(255),
+    fecha_envio         TIMESTAMP     NOT NULL,
+    plataforma_origen   VARCHAR(50)   NOT NULL,
+    ID_Mensaje_Original INT,
+    FOREIGN KEY (ID_Usuario_Origen) REFERENCES Usuario(ID_Usuario),
+    FOREIGN KEY (ID_Grupo_Destino) REFERENCES Grupo(ID_Grupo),
+    FOREIGN KEY (ID_Contrato) REFERENCES Contrato(ID_Contrato),
+    FOREIGN KEY (ID_Mensaje_Original) REFERENCES Mensaje_Grupo(ID_Mensaje_Grupo)
+);
+
+CREATE TABLE Estado_Entrega_Grupo (
+    ID_Estado        INT PRIMARY KEY,
+    ID_Mensaje_Grupo INT          NOT NULL,
+    ID_Usuario       INT          NOT NULL,
+    ID_Grupo         INT          NOT NULL,
+    fecha_evento     TIMESTAMP    NOT NULL,
+    estado           VARCHAR(20)  NOT NULL,
+    FOREIGN KEY (ID_Mensaje_Grupo) REFERENCES Mensaje_Grupo(ID_Mensaje_Grupo),
+    FOREIGN KEY (ID_Usuario) REFERENCES Usuario(ID_Usuario),
+    FOREIGN KEY (ID_Grupo) REFERENCES Grupo(ID_Grupo)
+);
+
 CREATE TABLE Mensaje_Buzon (
-    ID_MensajeVoz SERIAL PRIMARY KEY,
-    ID_Numero INT,
-    numero_origen VARCHAR(20),
-    ruta_archivo VARCHAR(255),
-    duracion_seg INT,
-    fecha TIMESTAMP,
-    estado VARCHAR(20),
-	FOREIGN KEY (ID_Numero) REFERENCES Buzon_Voz(ID_Numero)
+    ID_MensajeVoz INT PRIMARY KEY,
+    ID_Numero     INT           NOT NULL,
+    numero_origen VARCHAR(20)   NOT NULL,
+    ruta_archivo  VARCHAR(255)  NOT NULL,
+    duracion_seg  INT           NOT NULL,
+    fecha         TIMESTAMP     NOT NULL,
+    estado        VARCHAR(20)   NOT NULL,
+    CHECK (duracion_seg >= 0),
+    FOREIGN KEY (ID_Numero) REFERENCES Buzon_Voz(ID_Numero)
 );
