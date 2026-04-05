@@ -1,38 +1,62 @@
 # Enreach — Data Warehouse & Business Intelligence
-> Proyecto de implementación y consumo de un Data Warehouse para el sistema de telecomunicaciones Enreach.
 
-## Descripción del Proyecto
-Este proyecto consiste en el diseño, construcción y consumo de un **Data Warehouse (DW)** a partir del modelo OLTP del sistema de telecomunicaciones **Enreach**, una plataforma PBX/UCaaS que gestiona llamadas, extensiones, numeración DID, colas de llamadas, facturación, mensajería y buzones de voz.
+> Implementación y consumo de un Data Warehouse para el sistema de telecomunicaciones Enreach (PBX/UCaaS).
 
-El objetivo es transformar los datos operacionales en un modelo dimensional optimizado para el análisis histórico y la toma de decisiones estratégicas del negocio.
+## Descripción
 
-### Flujo general del proyecto
+Diseño, construcción y consumo de un **Data Warehouse** a partir del modelo OLTP de Enreach. Los datos operacionales se transforman en un modelo dimensional que alimenta tres dashboards analíticos: **Vista Enreach** (ejecutiva global), **Vista Partner** (gestión del canal) y **Vista Cliente** (control operativo del tenant).
+
+## Flujo del Proyecto
 
 ```
-Base de datos OLTP (PostgreSQL)
-        │
-        ▼
-   Proceso ETL (Pentaho Spoon)
-        │
-        ▼
-   Data Warehouse (PostgreSQL - Modelo Estrella)
-        │
-        ▼
-   Aplicación consumidora (Java + JavaScript)
-        └── Dashboards, reportes y consultas interactivas
+OLTP (PostgreSQL) → ETL (Pentaho Spoon) → DW (PostgreSQL) → API REST (Spring Boot) → Frontend (React)
 ```
 
-## Arquitectura
+## Stack Tecnológico
 
-| Capa                | Tecnología         | Descripción                                       |
-|---------------------|--------------------|---------------------------------------------------|
-| Base OLTP           | PostgreSQL         | Modelo relacional normalizado (29 tablas)         |
-| ETL                 | Pentaho Spoon      | Extracción, transformación y carga de datos       |
-| Data Warehouse      | PostgreSQL         | Modelo dimensional estrella                       |
-| Aplicación          | Java + JavaScript  | Interfaz de dashboards, reportes y filtrado       |
-| Control de versiones| Git + GitHub       | Versionamiento y colaboración del equipo          |
+| Capa | Tecnología |
+|------|------------|
+| ETL | Pentaho Spoon |
+| Data Warehouse | PostgreSQL · Modelo estrella |
+| Lógica analítica | PL/pgSQL (45 funciones) |
+| API REST | Java 17 · Spring Boot 3.2.4 |
+| Frontend | React 18 · Vite 7 · Recharts |
 
-## Integrantes del grupo
-- Karel González
-- Justin Soledispa
-- Juan Diego Sotomayor
+## Modelo Dimensional
+
+**Hechos:** `fact_facturacion`, `fact_llamada`, `fact_mensaje`
+
+**Dimensiones:** `dim_tiempo`, `dim_cliente`, `dim_partner`, `dim_plan_producto`, `dim_contrato`, `dim_acuerdo`, `dim_cola`, `dim_usuario`, `dim_grupo`, `dim_estado_pago`
+
+## Cobertura Analítica
+
+| Vista | KPIs | Reportes |
+|-------|------|----------|
+| Enreach | 6 | 9 |
+| Partner | 6 | 8 |
+| Cliente | 6 | 8 |
+
+## Ejecución
+
+### Backend
+```bash
+# Configurar application.properties y levantar
+cd dashboard-dw && mvn spring-boot:run
+# → http://localhost:8080
+```
+
+### Frontend
+```bash
+cd enreach-app && npm install && npm run dev
+# → http://localhost:5173
+```
+
+**Variable de entorno requerida:** `VITE_API_BASE_URL=http://localhost:8080`
+
+## Integrantes
+
+| Integrante | Módulo |
+|------------|--------|
+| Karel González | Vista Enreach |
+| Justin Soledispa | Vista Partner |
+| Juan Diego Sotomayor | Vista Cliente |
