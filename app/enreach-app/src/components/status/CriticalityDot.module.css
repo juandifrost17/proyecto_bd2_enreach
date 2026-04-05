@@ -1,0 +1,21 @@
+.dot {
+  width: 0.65rem;
+  height: 0.65rem;
+  display: inline-block;
+  border-radius: 999px;
+}
+
+.ok {
+  background: var(--color-status-ok);
+  box-shadow: 0 0 0 5px rgba(46, 125, 50, 0.12);
+}
+
+.warning {
+  background: var(--color-status-warning);
+  box-shadow: 0 0 0 5px rgba(230, 81, 0, 0.12);
+}
+
+.critical {
+  background: var(--color-status-critical);
+  box-shadow: 0 0 0 5px rgba(198, 40, 40, 0.12);
+}

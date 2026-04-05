@@ -1,0 +1,14 @@
+.chartSurface {
+  background: var(--color-surface-lowest);
+}
+
+.chartLabel {
+  fill: var(--color-text-body);
+  font-family: var(--font-family);
+  font-size: 0.75rem;
+}
+
+.chartGrid {
+  stroke: var(--color-chart-grid);
+  stroke-dasharray: 3 3;
+}

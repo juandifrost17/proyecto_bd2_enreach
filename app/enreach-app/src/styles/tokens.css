@@ -1,0 +1,63 @@
+:root {
+  color-scheme: light;
+
+  --color-background: #f8f9fb;
+  --color-surface: #f0f2f5;
+  --color-surface-low: #eef1f4;
+  --color-surface-lowest: #ffffff;
+  --color-surface-high: #e3e7eb;
+  --color-surface-highest: #d7dde3;
+
+  --color-primary: #006565;
+  --color-primary-light: #e0f2f1;
+  --color-primary-dark: #004d4d;
+  --color-secondary: #466463;
+
+  --color-text-heading: #002020;
+  --color-text-body: #5f6368;
+  --color-text-muted: #8a9099;
+  --color-text-on-primary: #ffffff;
+
+  --color-status-ok: #2e7d32;
+  --color-status-ok-bg: #e8f5e9;
+  --color-status-warning: #e65100;
+  --color-status-warning-bg: #fff3e0;
+  --color-status-critical: #c62828;
+  --color-status-critical-bg: #ffebee;
+
+  --color-chart-primary: #006565;
+  --color-chart-secondary: #a7d8d4;
+  --color-chart-tertiary: #80cbc4;
+  --color-chart-negative: #c62828;
+  --color-chart-grid: #e4e7eb;
+
+  --color-outline-ghost: rgba(0, 32, 32, 0.06);
+
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-size-display: 3.5rem;
+  --font-size-headline: 1.75rem;
+  --font-size-title: 1.125rem;
+  --font-size-body: 0.875rem;
+  --font-size-label: 0.6875rem;
+  --font-weight-bold: 700;
+  --font-weight-semibold: 600;
+  --font-weight-medium: 500;
+  --font-weight-regular: 400;
+
+  --radius-card: 12px;
+  --radius-chip: 6px;
+  --radius-button: 8px;
+  --gap-grid: 24px;
+  --padding-card: 1.4rem;
+  --padding-section: 2rem;
+
+  --shadow-float: 0 10px 40px rgba(0, 32, 32, 0.05);
+  --shadow-none: none;
+
+  --transition-fast: 0.2s ease-out;
+  --transition-normal: 0.3s ease-out;
+
+  --sidebar-width: 220px;
+  --topnav-height: 64px;
+  --content-max-width: 1600px;
+}

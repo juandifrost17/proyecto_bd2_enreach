@@ -1,0 +1,24 @@
+@keyframes pulse {
+  0% { opacity: 0.58; }
+  50% { opacity: 1; }
+  100% { opacity: 0.58; }
+}
+
+.skeleton {
+  width: 100%;
+  border-radius: var(--radius-card);
+  background: linear-gradient(90deg, rgba(0, 101, 101, 0.08) 0%, rgba(0, 101, 101, 0.14) 50%, rgba(0, 101, 101, 0.08) 100%);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+.card {
+  min-height: 18rem;
+}
+
+.kpi {
+  min-height: 11rem;
+}
+
+.table {
+  min-height: 20rem;
+}

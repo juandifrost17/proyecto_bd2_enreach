@@ -1,0 +1,40 @@
+.profile {
+  min-height: 2.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.4rem 0.5rem 0.4rem 0.42rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--color-surface-lowest);
+  color: var(--color-text-heading);
+  font: inherit;
+}
+
+.avatar {
+  width: 2rem;
+  height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  font-size: 0.76rem;
+  font-weight: var(--font-weight-bold);
+}
+
+.meta {
+  display: grid;
+  text-align: left;
+}
+
+.name {
+  font-size: 0.83rem;
+  font-weight: var(--font-weight-semibold);
+}
+
+.role {
+  color: var(--color-text-muted);
+  font-size: 0.72rem;
+}

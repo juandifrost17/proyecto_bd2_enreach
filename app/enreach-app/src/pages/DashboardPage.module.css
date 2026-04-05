@@ -1,0 +1,150 @@
+.page {
+  width: min(1480px, 100%);
+  margin: 0 auto;
+  display: grid;
+  gap: 1.6rem;
+}
+
+.pageHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.headerCopy {
+  max-width: 54rem;
+}
+
+.eyebrow {
+  margin-bottom: 0.65rem;
+  color: var(--color-primary);
+  font-size: var(--font-size-label);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.title {
+  color: var(--color-text-heading);
+  font-size: clamp(2.2rem, 4vw, 3.35rem);
+  line-height: 0.94;
+  letter-spacing: -0.04em;
+}
+
+.description {
+  max-width: 58rem;
+  margin-top: 0.8rem;
+  color: var(--color-text-body);
+  line-height: 1.72;
+}
+
+.contentStack {
+  display: grid;
+  gap: 1.1rem;
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.tablePreview {
+  min-height: 18rem;
+}
+
+.inlineStats {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  color: var(--color-text-muted);
+  font-size: 0.74rem;
+  font-weight: var(--font-weight-medium);
+}
+
+.inlineStats span + span {
+  position: relative;
+  padding-left: 0.85rem;
+}
+
+.inlineStats span + span::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--color-text-muted);
+  transform: translateY(-50%);
+}
+
+.chartPlaceholder {
+  min-height: 12rem;
+  display: grid;
+  place-items: center;
+  border-radius: 0.85rem;
+  background:
+    linear-gradient(180deg, rgba(0, 101, 101, 0.04) 0%, rgba(0, 101, 101, 0.08) 100%),
+    var(--color-surface-low);
+  color: var(--color-text-muted);
+  text-align: center;
+  line-height: 1.6;
+}
+
+.emptyInline {
+  min-height: 14rem;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+  border-radius: var(--radius-card);
+  background: linear-gradient(180deg, rgba(0, 101, 101, 0.03) 0%, rgba(0, 101, 101, 0.05) 100%);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.sectionOnlyContext .detailSection,
+.sectionOnlyDetail .contextSection {
+  display: none;
+}
+
+.metricStack {
+  display: grid;
+  gap: 0.95rem;
+  align-content: start;
+}
+
+.tablePreviewCompact {
+  min-height: 14rem;
+}
+
+@media (max-width: 1100px) {
+  .cardGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .title {
+    font-size: 2rem;
+  }
+
+  .page {
+    gap: 1.2rem;
+  }
+
+  .inlineStats {
+    flex-wrap: wrap;
+    gap: 0.5rem 0.85rem;
+  }
+
+  .inlineStats span + span {
+    padding-left: 0;
+  }
+
+  .inlineStats span + span::before {
+    display: none;
+  }
+}

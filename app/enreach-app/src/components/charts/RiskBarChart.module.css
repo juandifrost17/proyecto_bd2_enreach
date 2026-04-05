@@ -1,0 +1,56 @@
+.stack {
+  display: grid;
+  gap: 0.95rem;
+}
+
+.row {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.rowHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.label {
+  color: var(--color-text-heading);
+  font-size: 0.88rem;
+  font-weight: var(--font-weight-semibold);
+}
+
+.value {
+  margin-top: 0.25rem;
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+}
+
+.track {
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(70, 100, 99, 0.12);
+  overflow: hidden;
+}
+
+.fill {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--color-chart-primary);
+}
+
+.fill.alto,
+.fill.critical {
+  background: var(--color-status-critical);
+}
+
+.fill.medio,
+.fill.warning {
+  background: var(--color-status-warning);
+}
+
+.fill.bajo,
+.fill.ok {
+  background: var(--color-chart-primary);
+}

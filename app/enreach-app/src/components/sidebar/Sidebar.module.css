@@ -1,0 +1,48 @@
+.sidebar {
+  display: grid;
+  align-content: start;
+  gap: 1.4rem;
+}
+
+.section {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.eyebrow {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-label);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.navGroup {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.navItem {
+  width: 100%;
+  min-height: 2.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.75rem 0.95rem;
+  border-radius: var(--radius-card);
+  background: var(--color-surface-lowest);
+  color: var(--color-text-body);
+  font-size: 0.88rem;
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.navItem:hover {
+  color: var(--color-text-heading);
+}
+
+.navItemActive {
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+}
