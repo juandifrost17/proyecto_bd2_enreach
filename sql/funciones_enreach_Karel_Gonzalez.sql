@@ -594,7 +594,6 @@ BEGIN
             da.nivel_acuerdo,
             da.estado_acuerdo,
             da.sk_acuerdo,
-            -- fecha_fin: tomamos el máximo de las fechas registradas para ese acuerdo
             MAX(dt_fin.fecha)                           AS fecha_fin,
             COALESCE(SUM(ff.monto_total_factura), 0)    AS revenue
         FROM fact_facturacion ff
