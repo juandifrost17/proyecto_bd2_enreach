@@ -252,7 +252,6 @@ BEGIN
     ORDER BY SUM(ff.monto_total_factura) DESC, dp.nombre_partner;
 END; $$;
 
-
 -- Reporte CTX 2 — Riesgo financiero
 CREATE OR REPLACE FUNCTION fn_reporte_2_riesgo_financiero(
     p_id_entidad  INT,
@@ -484,7 +483,6 @@ BEGIN
     GROUP BY dp.pais_partner
     ORDER BY SUM(ff.monto_total_factura) DESC;
 END; $$;
-
 
 -- Reporte DET 8 — Scorecard operativo de partners críticos
 CREATE OR REPLACE FUNCTION fn_reporte_8_scorecard_partners(
