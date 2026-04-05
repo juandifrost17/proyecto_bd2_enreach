@@ -17,8 +17,8 @@ OLTP (PostgreSQL) → ETL (Pentaho Spoon) → DW (PostgreSQL) → API REST (Spri
 | Capa | Tecnología |
 |------|------------|
 | ETL | Pentaho Spoon |
-| Data Warehouse | PostgreSQL · Modelo estrella |
-| Lógica analítica | PL/pgSQL (45 funciones) |
+| Data Warehouse | 3 Data Marts (Kimball) |
+| Lógica analítica | PostgreSQL (45 funciones) |
 | API REST | Java 17 · Spring Boot 3.2.4 |
 | Frontend | React 18 · Vite 7 · Recharts |
 
