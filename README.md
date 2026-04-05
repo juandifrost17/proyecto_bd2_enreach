@@ -41,13 +41,16 @@ OLTP (PostgreSQL) → ETL (Pentaho Spoon) → DW (PostgreSQL) → API REST (Spri
 ### Backend
 ```bash
 # Configurar application.properties y levantar
-cd dashboard-dw && mvn spring-boot:run
+# Abrir la terminal en la carpeta: dashboard-dw
+mvn spring-boot:run
 # → http://localhost:8080
 ```
 
 ### Frontend
 ```bash
-cd enreach-app && npm install && npm run dev
+# Abrir la terminal en la carpeta: enreach-app
+npm install
+npm run dev
 # → http://localhost:5173
 ```
 
