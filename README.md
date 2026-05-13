@@ -2,9 +2,13 @@
 
 > Implementación y consumo de un Data Warehouse para el sistema de telecomunicaciones Enreach (PBX/UCaaS).
 
+---
+
 ## Descripción
 
-Diseño, construcción y consumo de un **Data Warehouse** a partir del modelo OLTP de Enreach. Los datos operacionales se transforman en un modelo dimensional que alimenta tres dashboards analíticos: **Vista Enreach** (ejecutiva global), **Vista Partner** (gestión del canal) y **Vista Cliente** (control operativo del tenant).
+Diseño, construcción y consumo de un **Data Warehouse** a partir del modelo OLTP de Enreach. Los datos operacionales se transforman mediante ETL en un modelo dimensional Kimball que alimenta tres dashboards analíticos: **Vista Enreach** (ejecutiva global), **Vista Partner** (gestión del canal) y **Vista Cliente** (control operativo del tenant).
+
+---
 
 ## Flujo del Proyecto
 
@@ -12,21 +16,26 @@ Diseño, construcción y consumo de un **Data Warehouse** a partir del modelo OL
 OLTP (PostgreSQL) → ETL (Pentaho Spoon) → DW (PostgreSQL) → API REST (Spring Boot) → Frontend (React)
 ```
 
+---
+
 ## Stack Tecnológico
 
-| Capa | Tecnología |
-|------|------------|
+| Capa / Módulo | Tecnología |
+|---------------|------------|
 | ETL | Pentaho Spoon |
-| Data Warehouse | 3 Data Marts (Kimball) |
-| Lógica analítica | PostgreSQL (45 funciones) |
+| Data Warehouse | PostgreSQL 16 · 3 Data Marts (Kimball) · 45 funciones analíticas |
 | API REST | Java 17 · Spring Boot 3.2.4 |
 | Frontend | React 18 · Vite 7 · Recharts |
+
+---
 
 ## Modelo Dimensional
 
 **Hechos:** `fact_facturacion`, `fact_llamada`, `fact_mensaje`
 
 **Dimensiones:** `dim_tiempo`, `dim_cliente`, `dim_partner`, `dim_plan_producto`, `dim_contrato`, `dim_acuerdo`, `dim_cola`, `dim_usuario`, `dim_grupo`, `dim_estado_pago`
+
+---
 
 ## Cobertura Analítica
 
@@ -36,30 +45,50 @@ OLTP (PostgreSQL) → ETL (Pentaho Spoon) → DW (PostgreSQL) → API REST (Spri
 | Partner | 6 | 8 |
 | Cliente | 6 | 8 |
 
+---
+
+## Capturas de Pantalla
+
+**Vista Enreach**
+![Vista Enreach](docs/screenshots/vista_enreach.png)
+
+**Vista Partner**
+![Vista Partner](docs/screenshots/vista_partner.png)
+
+**Vista Cliente**
+![Vista Cliente](docs/screenshots/vista_cliente.png)
+
+---
+
 ## Ejecución
 
 ### Backend
 ```bash
-# Configurar application.properties y levantar
-# Abrir la terminal en la carpeta: dashboard-dw
+# Abrir terminal en: dashboard-dw
 mvn spring-boot:run
 # → http://localhost:8080
 ```
 
 ### Frontend
 ```bash
-# Abrir la terminal en la carpeta: enreach-app
+# Abrir terminal en: enreach-app
 npm install
 npm run dev
 # → http://localhost:5173
 ```
 
-**Variable de entorno requerida:** `VITE_API_BASE_URL=http://localhost:8080`
+> **Variable de entorno requerida:** `VITE_API_BASE_URL=http://localhost:8080`
+
+---
 
 ## Integrantes
 
-| Integrante | Módulo |
-|------------|--------|
+| Integrante | Rol / Módulo |
+|------------|--------------|
 | Karel González | Vista Enreach |
 | Justin Soledispa | Vista Partner |
 | Juan Diego Sotomayor | Vista Cliente |
+
+---
+
+*Proyecto académico — Base de Datos 2 · Universidad Espíritu Santo (UEES) · 2026*
