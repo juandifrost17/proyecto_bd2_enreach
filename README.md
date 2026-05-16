@@ -49,8 +49,7 @@ proyecto_bd2_enreach/
 ├── app/
 │   ├── dashboard-dw/      # API REST Spring Boot
 │   └── enreach-app/       # Frontend React + Vite
-├── docs/
-│   └── screenshots/       # Capturas de la aplicación en ejecución
+├── screenshots/           # Capturas de la aplicación en ejecución
 ├── etl/                   # Transformaciones Pentaho Spoon
 ├── graphs/                # Diagramas del modelo relacional y dimensional
 ├── sql/                   # Scripts SQL, bloques de carga y funciones analíticas
@@ -126,14 +125,14 @@ Controladores principales:
 Las capturas se encuentran en la carpeta:
 
 ```text
-docs/screenshots/
+screenshots/
 ```
 
 ### Landing Page
 
 | Portada principal | Selección de nivel de análisis |
 |-------------------|--------------------------------|
-| <img src="docs/screenshots/landing_page1.png" alt="Landing page principal de Enreach Data Warehouse" width="100%"> | <img src="docs/screenshots/landing_page2.png" alt="Landing page con selección de vista Enreach, Partner y Cliente" width="100%"> |
+| <img src="screenshots/landing_page1.png" alt="Landing page principal de Enreach Data Warehouse" width="100%"> | <img src="screenshots/landing_page2.png" alt="Landing page con selección de vista Enreach, Partner y Cliente" width="100%"> |
 
 ### Vista Enreach
 
@@ -141,19 +140,19 @@ Dashboard ejecutivo para monitorear el comportamiento global del negocio, incluy
 
 | Dashboard ejecutivo | Facturación y cobranza |
 |---------------------|------------------------|
-| <img src="docs/screenshots/enreach/1.png" alt="Vista Enreach con KPIs ejecutivos y gráfico de facturación" width="100%"> | <img src="docs/screenshots/enreach/2.png" alt="Vista Enreach con reporte de facturado vs cobrado" width="100%"> |
+| <img src="screenshots/enreach/1.png" alt="Vista Enreach con KPIs ejecutivos y gráfico de facturación" width="100%"> | <img src="screenshots/enreach/2.png" alt="Vista Enreach con reporte de facturado vs cobrado" width="100%"> |
 
 | Tendencia y riesgo financiero | Revenue por país |
 |-------------------------------|------------------|
-| <img src="docs/screenshots/enreach/3.png" alt="Vista Enreach con tendencia de facturación anual y riesgo financiero" width="100%"> | <img src="docs/screenshots/enreach/4.png" alt="Vista Enreach con riesgo financiero y revenue por país" width="100%"> |
+| <img src="screenshots/enreach/3.png" alt="Vista Enreach con tendencia de facturación anual y riesgo financiero" width="100%"> | <img src="screenshots/enreach/4.png" alt="Vista Enreach con riesgo financiero y revenue por país" width="100%"> |
 
 | Demanda horaria y canalización | Salud de mensajería |
 |--------------------------------|---------------------|
-| <img src="docs/screenshots/enreach/5.png" alt="Vista Enreach con demanda horaria y canalización de llamadas" width="100%"> | <img src="docs/screenshots/enreach/6.png" alt="Vista Enreach con salud de mensajería" width="100%"> |
+| <img src="screenshots/enreach/5.png" alt="Vista Enreach con demanda horaria y canalización de llamadas" width="100%"> | <img src="screenshots/enreach/6.png" alt="Vista Enreach con salud de mensajería" width="100%"> |
 
 | Detalle granular |
 |------------------|
-| <img src="docs/screenshots/enreach/7.png" alt="Vista Enreach con detalle granular, scorecard y vencimientos de acuerdos" width="100%"> |
+| <img src="screenshots/enreach/7.png" alt="Vista Enreach con detalle granular, scorecard y vencimientos de acuerdos" width="100%"> |
 
 ### Vista Partner
 
@@ -161,19 +160,19 @@ Dashboard orientado al análisis de cada partner, con indicadores de facturació
 
 | Dashboard del partner | Selector de partner |
 |-----------------------|---------------------|
-| <img src="docs/screenshots/partner/1.png" alt="Vista Partner con KPIs y reporte de facturación por cliente" width="100%"> | <img src="docs/screenshots/partner/2.png" alt="Vista Partner con selector desplegable de partners" width="100%"> |
+| <img src="screenshots/partner/1.png" alt="Vista Partner con KPIs y reporte de facturación por cliente" width="100%"> | <img src="screenshots/partner/2.png" alt="Vista Partner con selector desplegable de partners" width="100%"> |
 
 | Facturación por cliente | Aging de cartera y uso del plan |
 |-------------------------|---------------------------------|
-| <img src="docs/screenshots/partner/3.png" alt="Vista Partner con facturado vs cobrado por cliente" width="100%"> | <img src="docs/screenshots/partner/4.png" alt="Vista Partner con aging de cartera y uso real vs plan" width="100%"> |
+| <img src="screenshots/partner/3.png" alt="Vista Partner con facturado vs cobrado por cliente" width="100%"> | <img src="screenshots/partner/4.png" alt="Vista Partner con aging de cartera y uso real vs plan" width="100%"> |
 
 | Crecimiento, llamadas y mensajería | Calidad de mensajería |
 |------------------------------------|-----------------------|
-| <img src="docs/screenshots/partner/5.png" alt="Vista Partner con crecimiento de clientes, deterioro de llamadas y calidad de mensajería" width="100%"> | <img src="docs/screenshots/partner/6.png" alt="Vista Partner con gráfico de calidad de mensajería" width="100%"> |
+| <img src="screenshots/partner/5.png" alt="Vista Partner con crecimiento de clientes, deterioro de llamadas y calidad de mensajería" width="100%"> | <img src="screenshots/partner/6.png" alt="Vista Partner con gráfico de calidad de mensajería" width="100%"> |
 
 | Mesa operativa | Vencimientos de contratos |
 |----------------|---------------------------|
-| <img src="docs/screenshots/partner/7.png" alt="Vista Partner con mesa operativa de clientes" width="100%"> | <img src="docs/screenshots/partner/8.png" alt="Vista Partner con tabla de vencimientos de contratos" width="100%"> |
+| <img src="screenshots/partner/7.png" alt="Vista Partner con mesa operativa de clientes" width="100%"> | <img src="screenshots/partner/8.png" alt="Vista Partner con tabla de vencimientos de contratos" width="100%"> |
 
 ### Vista Cliente
 
@@ -181,19 +180,19 @@ Dashboard para analizar un cliente específico, con métricas de comunicación, 
 
 | Dashboard del cliente | Selector de cliente |
 |-----------------------|---------------------|
-| <img src="docs/screenshots/cliente/1.png" alt="Vista Cliente con KPIs y tendencia de comunicaciones" width="100%"> | <img src="docs/screenshots/cliente/2.png" alt="Vista Cliente con selector desplegable de clientes" width="100%"> |
+| <img src="screenshots/cliente/1.png" alt="Vista Cliente con KPIs y tendencia de comunicaciones" width="100%"> | <img src="screenshots/cliente/2.png" alt="Vista Cliente con selector desplegable de clientes" width="100%"> |
 
 | Tendencias y costos | Capacidad y saturación |
 |---------------------|------------------------|
-| <img src="docs/screenshots/cliente/3.png" alt="Vista Cliente con tendencia de comunicaciones y costo por interacción" width="100%"> | <img src="docs/screenshots/cliente/4.png" alt="Vista Cliente con uso vs capacidad y saturación horaria" width="100%"> |
+| <img src="screenshots/cliente/3.png" alt="Vista Cliente con tendencia de comunicaciones y costo por interacción" width="100%"> | <img src="screenshots/cliente/4.png" alt="Vista Cliente con uso vs capacidad y saturación horaria" width="100%"> |
 
 | Embudo de contacto | Estado de pagos y colaboración |
 |--------------------|--------------------------------|
-| <img src="docs/screenshots/cliente/5.png" alt="Vista Cliente con saturación horaria y embudo de contacto por filial" width="100%"> | <img src="docs/screenshots/cliente/6.png" alt="Vista Cliente con estado de pagos, grupos de colaboración y usuarios no contestación" width="100%"> |
+| <img src="screenshots/cliente/5.png" alt="Vista Cliente con saturación horaria y embudo de contacto por filial" width="100%"> | <img src="screenshots/cliente/6.png" alt="Vista Cliente con estado de pagos, grupos de colaboración y usuarios no contestación" width="100%"> |
 
 | Usuarios con mayor no contestación |
 |------------------------------------|
-| <img src="docs/screenshots/cliente/7.png" alt="Vista Cliente con usuarios con mayor no contestación" width="100%"> |
+| <img src="screenshots/cliente/7.png" alt="Vista Cliente con usuarios con mayor no contestación" width="100%"> |
 
 ---
 
